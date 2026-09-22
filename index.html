@@ -401,7 +401,9 @@
 
   @media (max-width: 700px) {
     .slide { padding: 40px 24px 92px; gap: 18px; }
-    .chrome { padding: 10px 14px; }
+    /* `.who` is hidden here, and `space-between` on a lone child parks the nav at
+       the left. Bottom-right is where the thumb already is. */
+    .chrome { padding: 10px 14px; justify-content: flex-end; }
     .chrome .who { display: none; }
   }
 
