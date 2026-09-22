@@ -834,6 +834,39 @@
     return parseInt(slide.getAttribute("data-steps") || "0", 10);
   }
 
+  /* A reveal adds content below the fold, so the reader presses Next and sees
+     nothing. Bring the revealed block into view, but only when it is actually cut
+     off: if it already fits, leave the scroll alone. */
+  function revealIntoView(slide) {
+    var blocks = slide.querySelectorAll(".reveal.shown");
+    if (!blocks.length) return;
+
+    var top = Infinity, bottom = -Infinity;
+    Array.prototype.forEach.call(blocks, function (b) {
+      var r = b.getBoundingClientRect();
+      if (r.top < top) top = r.top;
+      if (r.bottom > bottom) bottom = r.bottom;
+    });
+
+    var chrome = document.querySelector(".chrome");
+    var pad = 20;
+    var viewTop = pad;
+    var viewBottom = window.innerHeight - (chrome ? chrome.offsetHeight : 0) - pad;
+    if (top >= viewTop && bottom <= viewBottom) return;   // already readable
+
+    var target;
+    if (bottom - top > viewBottom - viewTop) {
+      target = window.pageYOffset + top - viewTop;        // taller than the screen: start at its top
+    } else if (bottom > viewBottom) {
+      target = window.pageYOffset + bottom - viewBottom;  // short: scroll only as far as needed
+    } else {
+      target = window.pageYOffset + top - viewTop;
+    }
+
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: Math.max(0, target), behavior: reduce ? "auto" : "smooth" });
+  }
+
   function render() {
     /* Direction of travel decides which side the next slide enters from. Set
        before the is-current flip so style recalc sees the final value; a step-only
@@ -864,6 +897,7 @@
        the reader already is; snapping them to the top hid the answers they just
        asked for. */
     if (moved) window.scrollTo(0, 0);
+    else if (step > 0) revealIntoView(cur);
   }
 
   function forward() {
