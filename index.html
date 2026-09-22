@@ -893,11 +893,12 @@
     bar.style.width = ((i + 1) / slides.length * 100) + "%";
     prevBtn.disabled = (i === 0 && step === 0);
     nextBtn.disabled = (i === slides.length - 1 && step >= stepsOn(slides[i]));
-    /* Only a real slide change resets the scroll. A reveal adds height below where
-       the reader already is; snapping them to the top hid the answers they just
-       asked for. */
-    if (moved) window.scrollTo(0, 0);
-    else if (step > 0) revealIntoView(cur);
+    /* Answers on screen beat a fixed scroll rule. If the step is past zero the
+       reveal is showing, whether the reader just pressed Next or arrived here
+       backwards with it already open, so bring it into view either way. A plain
+       slide change has nothing revealed and resets to the top. */
+    if (step > 0) revealIntoView(cur);
+    else if (moved) window.scrollTo(0, 0);
   }
 
   function forward() {
