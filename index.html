@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>XanaLife Emergency Preparedness &amp; Response · Branch Staff Session</title>
+<meta name="description" content="Branch staff training: the first ten minutes of any emergency. Protect people. Control the hazard. Protect product. Recover well.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:      #FDFDFB;
+    --ink:        #0F1E19;
+    --ink-soft:   #55655E;
+    --hairline:   #DCE2DE;
+    --navy:       #0F3057;
+    --navy-deep:  #0A2340;
+    --green:      #1F7B4A;
+    --amber:      #E8A33D;
+    --alert:      #B3341F;
+    --onband:     #F4F8F5;
+    --fill:       #8A9891;
+    --shade:      #F2F5F2;
+
+    /* Inter leads every stack: real 400-900 weights, so headings get a true black
+       instead of a smeared synthetic bold. Source Serif 4 replaces Georgia for the
+       editorial lede/story/note voice and renders identically off-Windows. Both
+       degrade to the system faces below if the CDN is unreachable. */
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI Variable Display", "Segoe UI",
+            "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", Times, serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:     #0B1411;
+      --ink:       #EAF1EC;
+      --ink-soft:  #9FB0A8;
+      --hairline:  #26332D;
+      --navy:      #16324F;
+      --navy-deep: #0C1F33;
+      --green:     #4CAE79;
+      --amber:     #EFB55C;
+      --alert:     #E4694F;
+      --onband:    #EAF1EC;
+      --fill:      #7C8C85;
+      --shade:     #141F1B;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:     #0B1411;
+    --ink:       #EAF1EC;
+    --ink-soft:  #9FB0A8;
+    --hairline:  #26332D;
+    --navy:      #16324F;
+    --navy-deep: #0C1F33;
+    --green:     #4CAE79;
+    --amber:     #EFB55C;
+    --alert:     #E4694F;
+    --onband:    #EAF1EC;
+    --fill:      #7C8C85;
+    --shade:     #141F1B;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ---------- stage ---------- */
+  .stage {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* The slide enters from ±20px, which would widen the document mid-flight and
+       flash a scrollbar. Clipping here (not `hidden`) contains it without turning
+       the stage into a scroll container. */
+    overflow-x: clip;
+  }
+
+  .slide {
+    display: none;
+    flex: 1;
+    padding: 56px 60px 96px;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+    max-width: 1180px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .slide.is-current { display: flex; }
+  /* Slides whose content can exceed one screen start at the top, so nothing is
+     clipped by the centred overflow. */
+  .slide.tall { justify-content: flex-start; }
+
+  /* full-bleed divider slides */
+  .slide.band {
+    background: var(--navy-deep);
+    color: var(--onband);
+    max-width: none;
+    justify-content: center;
+  }
+  .slide.band .inner { max-width: 1180px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 18px; }
+
+  /* The brand logo. The lockup carries a dark-green tagline, so it always sits on
+     a white plaque: deliberate on the dark band, invisible on paper.
+     Never tint or blend it. */
+  .logo {
+    display: block;
+    height: 72px; width: auto;
+    /* .slide is a flex column, so a bare <img> child would get align-self:stretch
+       and be squashed to full slide width. align-self + object-fit keep the
+       lockup's aspect ratio. Do not remove either. */
+    align-self: flex-start;
+    object-fit: contain;
+    background: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 720px) { .logo { height: 52px; } }
+
+  /* ---------- type ---------- */
+  .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--green);
+  }
+  .band .eyebrow { color: var(--amber); }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(38px, 6.2vw, 78px);
+    font-weight: 900; letter-spacing: -.032em;
+    line-height: .98; font-synthesis-weight: none;
+    margin: 0; text-wrap: balance;
+  }
+  h2 {
+    font-family: var(--sans);
+    font-size: clamp(30px, 4.4vw, 54px);
+    font-weight: 800; letter-spacing: -.028em;
+    line-height: 1.03; font-synthesis-weight: none;
+    margin: 0; text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: clamp(20px, 2.3vw, 27px);
+    font-weight: 800; letter-spacing: -.016em;
+    line-height: 1.2; font-synthesis-weight: none;
+    margin: 0; text-wrap: balance;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(17px, 1.9vw, 22px);
+    line-height: 1.5; color: var(--ink-soft);
+    margin: 0; max-width: 62ch;
+  }
+  .band .lede { color: rgba(244,248,245,.8); }
+
+  .story {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(18px, 2.1vw, 25px);
+    line-height: 1.52; margin: 0; max-width: 56ch;
+  }
+
+  /* the document's own section labels: USE ALONGSIDE, DO FIRST, TIME PRESSURE … */
+  .label {
+    font-size: 11px; font-weight: 800; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-soft); margin: 0;
+  }
+  .label.flag { color: var(--amber); }
+
+  .rulenum {
+    font-family: var(--sans);
+    font-size: clamp(56px, 9vw, 118px);
+    font-weight: 900; line-height: .82; letter-spacing: -.05em;
+    color: var(--green); font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- pieces ---------- */
+  .pointlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; max-width: 68ch; }
+  /* The dot is absolutely positioned rather than a grid/flex item: any bullet
+     carrying inline markup stays in one text flow instead of dropping into the
+     dot column one word per line. */
+  .pointlist li {
+    position: relative;
+    padding-left: 36px;
+    font-size: clamp(16px, 1.75vw, 20px); line-height: 1.45;
+  }
+  .pointlist li::before {
+    content: ""; position: absolute; left: 0; top: .52em;
+    width: 10px; height: 10px;
+    background: var(--green); border-radius: 50%;
+  }
+  .band .pointlist li::before { background: var(--amber); }
+
+  /* 12 readiness points wrap into columns instead of running one long column */
+  .pointlist.cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 16px 34px; max-width: none;
+  }
+
+  /* numbered list: same trap as .pointlist, same fix */
+  .numlist {
+    list-style: none; counter-reset: n; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 12px; max-width: 74ch;
+  }
+  .numlist.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 36px; max-width: none; }
+  @media (max-width: 780px) { .numlist.two { grid-template-columns: 1fr; } }
+  .numlist li {
+    counter-increment: n;
+    position: relative;
+    padding-left: 46px;
+    font-size: clamp(15px, 1.65vw, 19px); line-height: 1.4;
+  }
+  .numlist li::before {
+    content: counter(n); position: absolute; left: 0; top: 0;
+    font-weight: 700; color: var(--green);
+    font-variant-numeric: tabular-nums; font-size: 20px; line-height: 1.25;
+  }
+
+  .note {
+    border-left: 4px solid var(--amber);
+    padding: 4px 0 4px 18px;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(16px, 1.8vw, 21px);
+    line-height: 1.5; max-width: 60ch; margin: 0;
+  }
+  .note.good { border-color: var(--green); }
+  .note.bad  { border-color: var(--alert); }
+
+  .why {
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: var(--ink-soft); line-height: 1.5; max-width: 64ch; margin: 0;
+  }
+  .why b { color: var(--ink); }
+
+  .ref {
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--fill); margin: 0;
+  }
+
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .box {
+    border: 1px solid var(--hairline); background: var(--shade);
+    padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .box-label {
+    font-family: var(--sans);
+    font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .box.bad  .box-label { color: var(--alert); }
+  .box.good .box-label { color: var(--green); }
+  .box.flag .box-label { color: var(--amber); }
+  .box p { margin: 0; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.45; }
+
+  /* stop-work banner */
+  .callout {
+    border: 3px solid var(--alert); padding: 18px 24px;
+    display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap;
+  }
+  .call-verb {
+    font-size: clamp(14px, 1.5vw, 17px); font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--alert);
+  }
+  .call-number {
+    font-size: clamp(22px, 3.2vw, 38px); font-weight: 700;
+    letter-spacing: -.03em;
+  }
+
+  /* answer reveal */
+  .reveal { display: none; flex-direction: column; gap: 16px; }
+  .reveal.shown { display: flex; animation: rise .28s ease-out; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal.shown { animation: none; }
+    /* the slide nudge and the list cascade are decoration. Drop both. */
+    .slide.is-current,
+    .pointlist li, .numlist li, .quiz li, .grid2 > .box { animation: none !important; }
+    * { scroll-behavior: auto !important; }
+  }
+  .prompt {
+    font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--fill); display: flex; align-items: center; gap: 8px;
+  }
+  .prompt.hidden { visibility: hidden; }
+  .prompt kbd {
+    font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .04em;
+    border: 1px solid var(--hairline); border-bottom-width: 2px;
+    padding: 3px 7px; border-radius: 3px; color: var(--ink-soft);
+  }
+
+  /* quiz */
+  .quiz { list-style: none; counter-reset: q; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; max-width: 78ch; }
+  .quiz li {
+    counter-increment: q;
+    position: relative;
+    padding-left: 48px;
+    font-size: clamp(15px, 1.65vw, 19px); line-height: 1.4;
+    padding-bottom: 14px; border-bottom: 1px solid var(--hairline);
+  }
+  .quiz li:last-child { border-bottom: none; }
+  .quiz li::before {
+    content: counter(q); position: absolute; left: 0; top: 0;
+    font-weight: 700; color: var(--green);
+    font-variant-numeric: tabular-nums; font-size: 20px; line-height: 1.25;
+  }
+  /* Do NOT put `display` on this base rule. The answers are <span class="ans
+     reveal">, and `.reveal { display:none }` is only specificity (0,1,0), and a
+     `display` here would score (0,2,0) and silently beat it, rendering every
+     answer on load and making the reveal step do nothing. */
+  .quiz .ans { margin-top: 6px; font-family: var(--serif); color: var(--ink-soft); font-size: .92em; }
+  .quiz .ans.shown { display: block; }
+  .quiz .ans::before { content: "→ "; color: var(--green); font-family: var(--sans); font-weight: 700; }
+
+  /* ---------- motion ----------
+     Two layers only. The slide nudges in from the direction you travelled, and
+     the lists cascade underneath it. `from`-only keyframes mean the `to` state is
+     the element's own styling; nothing to keep in sync.
+
+     Both layers restart for free: a slide flipping display:none → flex restarts
+     the animation on itself and on every descendant, so no JS re-triggering is
+     needed for the cascade, and a revealed block cascades when it is shown. */
+  @keyframes enter-fwd  { from { opacity: 0; transform: translate3d(20px, 0, 0); } }
+  @keyframes enter-back { from { opacity: 0; transform: translate3d(-20px, 0, 0); } }
+  @keyframes item-in    { from { opacity: 0; transform: translate3d(0, 10px, 0); } }
+
+  .slide.is-current { animation: enter-fwd .34s cubic-bezier(.22,.61,.36,1) both; }
+  .stage[data-dir="back"] .slide.is-current { animation-name: enter-back; }
+
+  .pointlist li, .numlist li, .quiz li, .grid2 > .box {
+    animation: item-in .4s cubic-bezier(.22,.61,.36,1) both;
+    animation-delay: calc(var(--n, 0) * 36ms);
+  }
+
+  /* A revealed block is one card, not another list. `.reveal.shown` already
+     animates the container, so letting its children cascade on top compounded two
+     opacity fades: the card landed at full opacity while its items were still
+     materialising, and the un-animated .note popped in on the first frame.
+     Specificity here must beat the `.numlist li` rule above. */
+  .reveal .pointlist li, .reveal .numlist li,
+  .reveal .quiz li, .reveal .grid2 > .box { animation: none; }
+
+  /* closing: the two ways someone reaches this deck */
+  .paths { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 26px; }
+  @media (max-width: 780px) { .paths { grid-template-columns: 1fr; } }
+  .path { border-left: 3px solid var(--amber); padding: 2px 0 2px 16px; }
+  .path-label {
+    font-size: 12px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 7px;
+  }
+  .path p {
+    margin: 0; font-family: var(--serif);
+    font-size: clamp(15px, 1.55vw, 18px); line-height: 1.5;
+    color: rgba(244,248,245,.85);
+  }
+  .path p + p { margin-top: 8px; }
+
+  /* ---------- chrome ---------- */
+  .chrome {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 12px 22px;
+    background: var(--paper);
+    border-top: 1px solid var(--hairline);
+    z-index: 20;
+  }
+  .chrome .who { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--fill); }
+  .nav { display: flex; align-items: center; gap: 10px; }
+  .nav button {
+    font-family: var(--sans); font-size: 13px; font-weight: 700;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--hairline); border-radius: 3px;
+    padding: 7px 14px; cursor: pointer;
+  }
+  .nav button:hover { border-color: var(--green); color: var(--green); }
+  .nav button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+  .nav button[disabled] { opacity: .35; cursor: default; }
+  .nav button[disabled]:hover { border-color: var(--hairline); color: var(--ink); }
+  .counter {
+    font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;
+    color: var(--ink-soft); min-width: 62px; text-align: center;
+  }
+  .progress {
+    position: fixed; left: 0; bottom: 0; height: 3px;
+    background: var(--green); z-index: 21; transition: width .22s ease;
+  }
+  @media (prefers-reduced-motion: reduce) { .progress { transition: none; } }
+
+  @media (max-width: 700px) {
+    .slide { padding: 40px 24px 92px; gap: 18px; }
+    .chrome { padding: 10px 14px; }
+    .chrome .who { display: none; }
+  }
+
+  /* ---------- print: the whole deck as a handout ---------- */
+  @page { size: A4 portrait; margin: 14mm; }
+  @media print {
+    :root, :root[data-theme="dark"] {
+      --paper:#FFF; --ink:#0F1E19; --ink-soft:#4A5A53; --hairline:#C9D2CD;
+      --navy:#0F3057; --navy-deep:#0A2340; --green:#1F7B4A; --amber:#E8A33D;
+      --alert:#B3341F; --onband:#FFF; --fill:#93A19A; --shade:#F2F5F2;
+    }
+    body { background: #fff; }
+    .chrome, .progress, .prompt { display: none !important; }
+    /* Every slide becomes display:flex at print time, which restarts these
+       animations from opacity 0. With a staggered delay, that can snapshot a
+       half-printed list, or a blank one. The handout is always fully drawn. */
+    .slide.is-current, .slide,
+    .pointlist li, .numlist li, .quiz li, .grid2 > .box { animation: none !important; }
+    .slide {
+      display: flex !important; min-height: auto; page-break-after: always;
+      padding: 0 0 24px; gap: 14px; justify-content: flex-start;
+    }
+    .slide.band { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 24px; }
+    /* A printed handout shows every answer. The span answers need block, not flex,
+       or the "→ " pseudo-element becomes its own flex item. */
+    .reveal { display: flex !important; }
+    .quiz .ans { display: block !important; }
+    h1 { font-size: 30pt; } h2 { font-size: 22pt; } h3 { font-size: 14pt; }
+    .rulenum { font-size: 44pt; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="stage" id="stage">
+
+  <!-- 1 · cover -->
+  <section class="slide">
+    <img class="logo" alt="XanaLife, Every Day Better" src="https://www.xanalife.com/cdn/shop/files/logo_svg.svg?v=1764271953&width=832">
+    <div class="eyebrow">Xana operating system · emergency preparedness &amp; response</div>
+    <h1>Protect people. Then everything else.</h1>
+    <p class="lede">Practical training for retail/wholesale, cold storage, deli, liquor and pharmacy. The same first ten minutes at every Xana location, and what to protect once the people are safe.</p>
+    <p class="ref">Branch staff session · September 2026 · retail / wholesale · cold storage · deli · liquor · pharmacy</p>
+  </section>
+
+  <!-- 2 · outcomes -->
+  <section class="slide">
+    <div class="eyebrow">01 · Start here</div>
+    <h2>What you should be able to do after this session.</h2>
+    <ul class="pointlist">
+      <li><b>Recognize.</b> Know what counts as an emergency or incident in the Xana environment.</li>
+      <li><b>Respond.</b> Execute the FIRST 10 MINUTES without improvising.</li>
+      <li><b>Control.</b> Know when to stop an area, isolate a hazard, or place product on HOLD.</li>
+      <li><b>Escalate.</b> Know who takes the lead and when to call specialist / external support.</li>
+      <li><b>Recover.</b> Re-open only when safety, product and technical checks are complete.</li>
+    </ul>
+    <p class="note good">The procedure is designed to make emergency response <b>consistent across every Xana location</b>, so a customer, a product or a colleague is handled the same way at every branch.</p>
+  </section>
+
+  <!-- 3 · band -->
+  <section class="slide band">
+    <div class="inner">
+      <div class="eyebrow">Part one</div>
+      <h1>The environment and the logic.</h1>
+      <p class="lede">Five business zones, one response sequence. The risks differ by area; the order of operations never does.</p>
+    </div>
+  </section>
+
+  <!-- 4 · five zones -->
+  <section class="slide tall">
+    <div class="eyebrow">02 · The Xana environment</div>
+    <h2>One operating system. Five business zones.</h2>
+    <p class="why">The same response logic applies, but the product and operational risks differ by area.</p>
+    <div class="grid2">
+      <div class="box"><span class="box-label">Retail / Wholesale</span><p>Customers, stock, cash, aisles, receiving.<br><b>Risks:</b> stock loss · slips · broken glass · security · POS.</p></div>
+      <div class="box"><span class="box-label">Cold Storage</span><p>Cold rooms, chillers, freezers.<br><b>Risks:</b> temperature excursion · refrigeration failure · power loss.</p></div>
+      <div class="box"><span class="box-label">Deli</span><p>Food prep, ready-to-eat, cooking.<br><b>Risks:</b> foodborne illness · contamination · chemical / gas · burns.</p></div>
+      <div class="box"><span class="box-label">Liquor</span><p>Bottles, cash, stock.<br><b>Risks:</b> broken glass · security · crowd / conflict · stock loss.</p></div>
+      <div class="box"><span class="box-label">Pharmacy</span><p>Medicines, prescriptions, patient-facing care.<br><b>Risks:</b> patient safety · cold chain · confidentiality · system outage.</p></div>
+    </div>
+    <p class="why">Also covered: receiving, stores, offices and utility areas, plus <b>employees, customers, contractors, suppliers and visitors</b>.</p>
+  </section>
+
+  <!-- 5 · operating logic -->
+  <section class="slide">
+    <div class="eyebrow">03 · The operating logic</div>
+    <h2>Clarity beats heroics. Follow the sequence.</h2>
+    <p class="why">The response sequence is simple. In an emergency, it is the one thing nobody has to invent.</p>
+    <ol class="numlist two">
+      <li><b>Protect people.</b> Life safety comes first.</li>
+      <li><b>Control the hazard.</b> Stop or isolate what is unsafe.</li>
+      <li><b>Protect product.</b> Hold, segregate and trace affected stock.</li>
+      <li><b>Communicate.</b> Call the right people; keep instructions clear.</li>
+      <li><b>Recover.</b> Repair, assess, authorize, restart.</li>
+      <li><b>Learn.</b> Record, investigate, correct, prevent recurrence.</li>
+    </ol>
+    <p class="note bad"><b>Key rule:</b> do not keep trading an unsafe activity to protect sales.</p>
+  </section>
+
+  <!-- 6 · non-negotiables -->
+  <section class="slide">
+    <div class="eyebrow">04 · Non-negotiables</div>
+    <h2>Know what sits above the SOP.</h2>
+    <p class="label">Use alongside</p>
+    <ul class="pointlist">
+      <li>Site emergency contacts, fire plan / evacuation arrangements, first-aid arrangements</li>
+      <li>Equipment instructions and Safety Data Sheets (SDS)</li>
+      <li>Food safety and pharmacy procedures, and applicable regulatory requirements</li>
+    </ul>
+    <p class="note bad">If a site-specific requirement is stricter: <b>the stricter requirement applies.</b> And no one improvises interventions beyond their training or authority.</p>
+  </section>
+
+  <!-- 7 · incident command -->
+  <section class="slide tall">
+    <div class="eyebrow">05 · Incident command</div>
+    <h2>One clear lead. Specialist support around the lead.</h2>
+    <p class="note good">The <b>Branch / Outlet Lead</b> is the Incident Lead until relieved.</p>
+    <ul class="pointlist">
+      <li><b>Shift Lead / Supervisor.</b> Customer direction, headcount, area control</li>
+      <li><b>Pharmacy Lead / Pharmacist.</b> Patient safety, medicines, clinical escalation</li>
+      <li><b>Deli / Food Safety Lead.</b> Food control, traceability, sanitation</li>
+      <li><b>Facilities / Maintenance.</b> Utilities, refrigeration, technical recovery</li>
+      <li><b>Security.</b> Access control, threat response, police coordination</li>
+      <li><b>Quality / Compliance.</b> Product safety, investigation, disposition</li>
+      <li><b>Operations / COO.</b> Resources, continuity, leadership escalation</li>
+      <li><b>Finance / Administration.</b> Emergency procurement, records, claims</li>
+    </ul>
+  </section>
+
+  <!-- 8 · band -->
+  <section class="slide band">
+    <div class="inner">
+      <div class="eyebrow">Part two</div>
+      <h1>The first ten minutes.</h1>
+      <p class="lede">Every emergency starts with the same sequence. Drill it until you can run it from memory, under pressure, without this page.</p>
+    </div>
+  </section>
+
+  <!-- 9 · first 10 minutes -->
+  <section class="slide tall">
+    <div class="eyebrow">06 · Drill this</div>
+    <h2>The first ten minutes.</h2>
+    <ol class="numlist two">
+      <li><b>Alert.</b> Raise the alarm and notify the Branch Lead.</li>
+      <li><b>Protect.</b> Move people away from danger.</li>
+      <li><b>Stop / isolate.</b> Stop the unsafe operation or isolate the area.</li>
+      <li><b>Evacuate / shelter.</b> Use the site emergency plan.</li>
+      <li><b>Account.</b> Headcount, and report missing persons.</li>
+      <li><b>Call.</b> Emergency, security, maintenance or medical, as the situation requires.</li>
+      <li><b>Protect product.</b> HOLD / DO NOT SELL where required.</li>
+      <li><b>Document.</b> Start the incident record.</li>
+      <li><b>Escalate.</b> Operations plus the relevant function.</li>
+      <li><b>Recover.</b> Restart only after checks and authorization.</li>
+    </ol>
+    <p class="ref">Steps 1-6 are never swapped. Steps 7-10 run in parallel with the response, not after it.</p>
+  </section>
+
+  <!-- 10 · fire -->
+  <section class="slide tall">
+    <div class="eyebrow">Response playbook · 07 · fire / smoke</div>
+    <h2>Fire is a life-safety event first.</h2>
+    <p class="why">Product protection comes only after people are safe.</p>
+    <p class="label">Do first</p>
+    <ol class="numlist">
+      <li>Raise the alarm and move away from the source.</li>
+      <li>Call the emergency / fire response number.</li>
+      <li>Only a trained person may use a suitable extinguisher, and only if the fire is small and escape remains possible.</li>
+      <li>Evacuate through marked exits; no personal belongings.</li>
+      <li>Assemble, headcount, report missing persons.</li>
+    </ol>
+    <p class="label">Then</p>
+    <p class="why">Quarantine exposed product: heat · smoke · soot · firefighting agents · water · structural contamination.</p>
+    <p class="label flag">Area-specific</p>
+    <div class="grid2">
+      <div class="box flag"><span class="box-label">Deli</span><p>Exposed ready-to-eat food goes on <b>HOLD</b>.</p></div>
+      <div class="box flag"><span class="box-label">Pharmacy</span><p>Protect medicines <b>and</b> patient confidentiality.</p></div>
+      <div class="box flag"><span class="box-label">Liquor / Retail</span><p>Broken glass is cleaned only <b>after</b> life-safety is secured.</p></div>
+    </div>
+  </section>
+
+  <!-- 11 · water / chemical / gas -->
+  <section class="slide tall">
+    <div class="eyebrow">Response playbook · 08 · water / chemical / gas</div>
+    <h2>Often localized. Isolate first, then decide the footprint.</h2>
+    <p class="why">These are often localized emergencies: isolate first, then decide the operational footprint.</p>
+    <div class="grid2">
+      <div class="box"><span class="box-label">Water / sewage</span><p>Keep people away from electrical hazards. Stop the affected operation and isolate the source if safe. Prevent traffic into clean food, pharmacy or stock areas. Segregate water- or sewage-exposed products. Get technical / regulatory clearance if needed.</p></div>
+      <div class="box"><span class="box-label">Chemical spill</span><p>Keep people away; do not touch unidentified substances. Isolate and use the SDS and trained response support. Prevent contamination of food, medicines and packaging. Dispose and clean only through the approved process. Escalate if exposure or contamination occurs.</p></div>
+      <div class="box"><span class="box-label">Gas leak</span><p>Do not create an ignition source. Isolate only if safe and within your authority. Evacuate the affected area as required. Call emergency / technical support. <b>Do not resume until cleared.</b></p></div>
+    </div>
+    <p class="note"><b>Trainer cue:</b> ask “What must NOT be done?” Unsafe improvisation is a recurring failure mode.</p>
+  </section>
+
+  <!-- 12 · power & cold chain -->
+  <section class="slide tall">
+    <div class="eyebrow">09 · Xana-critical · power outage &amp; cold-chain failure</div>
+    <h2>For Xana, a utility failure can become a product-integrity and patient-safety emergency.</h2>
+    <div class="grid2">
+      <div class="box"><span class="box-label">Power outage</span><p>Protect people: lighting, access, movement. Keep cold-room, freezer and pharmacy refrigerator doors <b>closed</b>. Record the outage start time and monitor temperatures. Use approved backup power only. <b>No improvising connections.</b> Use the approved POS / dispensing downtime process. Escalate if safety, cold chain, medicine availability or trading continuity is threatened.</p></div>
+      <div class="box"><span class="box-label">Cold-chain failure</span><p>Confirm the reading using the monitoring device. Identify affected products and the time window. Label <b>HOLD / DO NOT SELL</b> where required. Transfer critical products only under an approved, validated plan. Do not release until the responsible technical / quality / pharmacy decision-maker approves. Record temperature history, repairs and product disposition.</p></div>
+    </div>
+    <p class="note good">Mental model: <b>cold chain is a product-integrity control, not just a refrigeration issue.</b></p>
+  </section>
+
+  <!-- 13 · know your risk -->
+  <section class="slide tall">
+    <div class="eyebrow">10 · Know your risk</div>
+    <h2>What changes by operating area?</h2>
+    <p class="why">Same FIRST 10 MINUTES. Different “what must I protect?”</p>
+    <div class="grid2">
+      <div class="box"><span class="box-label">Retail / Wholesale</span><p><b>People:</b> customers, staff, crowds<br><b>Product / service:</b> stock, cash, transaction accuracy<br><b>Special risk:</b> falls · broken glass · security · POS</p></div>
+      <div class="box"><span class="box-label">Cold Storage</span><p><b>People:</b> staff and contractors<br><b>Product / service:</b> cold-chain food and beverages<br><b>Special risk:</b> temperature excursion · equipment failure</p></div>
+      <div class="box"><span class="box-label">Deli</span><p><b>People:</b> customers and food handlers<br><b>Product / service:</b> ready-to-eat food, ingredients<br><b>Special risk:</b> food safety · gas · chemicals · burns</p></div>
+      <div class="box"><span class="box-label">Liquor</span><p><b>People:</b> customers and staff<br><b>Product / service:</b> bottles, cash, stock<br><b>Special risk:</b> broken glass · security · conflict</p></div>
+      <div class="box"><span class="box-label">Pharmacy</span><p><b>People:</b> patients and staff<br><b>Product / service:</b> medicines, prescriptions, records<br><b>Special risk:</b> clinical safety · cold chain · confidentiality</p></div>
+    </div>
+    <p class="note"><b>Training question:</b> in your area, what would be the first sign that should make you stop and escalate?</p>
+  </section>
+
+  <!-- 14 · HOLD -->
+  <section class="slide tall">
+    <div class="eyebrow">11 · Product control</div>
+    <h2>HOLD means HOLD.</h2>
+    <p class="why">Questionable product is not “probably okay.” It is controlled until assessed.</p>
+    <div class="grid2">
+      <div class="box"><span class="box-label">Food / Deli</span><p>Heat · smoke · water · sewage · chemical · pest · bodily fluid · temperature abuse.</p></div>
+      <div class="box"><span class="box-label">Cold-chain food / beverages</span><p>Temperature excursion · refrigeration failure · prolonged outage.</p></div>
+      <div class="box"><span class="box-label">Pharmacy medicines</span><p>Temperature excursion · contamination · water / smoke / fire · storage failure · security concern.</p></div>
+      <div class="box"><span class="box-label">Liquor / Retail stock</span><p>Damage · contamination · broken glass · water / fire / smoke · security loss.</p></div>
+    </div>
+    <div class="callout">
+      <span class="call-verb">Hold / do not sell</span>
+      <span class="call-number">Do not sell · Do not serve · Do not dispense · Do not move without control</span>
+    </div>
+  </section>
+
+  <!-- 15 · other incidents -->
+  <section class="slide tall">
+    <div class="eyebrow">12 · Other incidents</div>
+    <h2>Not every incident is a fire, but every incident still needs command, control and escalation.</h2>
+    <p class="why">The rest of the risk picture.</p>
+    <ol class="numlist two">
+      <li><b>Medical injury.</b> First aid within training, medical escalation, control the scene.</li>
+      <li><b>Foodborne illness.</b> Stop the affected process / product, isolate lots, preserve traceability, escalate.</li>
+      <li><b>Biological / bodily fluid.</b> Restrict the area, trained response and approved cleaning, quarantine the exposure.</li>
+      <li><b>Pest infestation.</b> Isolate affected stock or area, notify pest control and Quality.</li>
+      <li><b>Security / violence / sabotage.</b> Life safety, disengage, secure the area, security and police.</li>
+      <li><b>POS / communication outage.</b> Approved downtime process, protect records, reconcile on restoration.</li>
+    </ol>
+  </section>
+
+  <!-- 16 · recovery -->
+  <section class="slide">
+    <div class="eyebrow">13 · Recovery</div>
+    <h2>When are we allowed to re-open?</h2>
+    <p class="story">“The hazard looks gone” is not the same as “the operation is safe to restart.”</p>
+    <div class="grid2">
+      <div class="box"><span class="box-label">1 · People safe</span><p>No continuing exposure or unsafe condition.</p></div>
+      <div class="box"><span class="box-label">2 · Hazard controlled</span><p>Fire, water, gas, chemical, security or technical hazard is controlled.</p></div>
+      <div class="box"><span class="box-label">3 · Product assessed</span><p>Affected product is released, held or disposed through the responsible function.</p></div>
+      <div class="box"><span class="box-label">4 · Technical / required approval</span><p>Facilities / Quality / Pharmacy / the relevant authority confirms readiness where required.</p></div>
+    </div>
+    <p class="note">Document the incident, the corrective actions and the re-opening authorization.</p>
+  </section>
+
+  <!-- 17 · readiness points -->
+  <section class="slide tall">
+    <div class="eyebrow">14 · Preparedness</div>
+    <h2>A branch that is prepared responds faster.</h2>
+    <p class="why">Readiness is visible <b>before</b> the emergency happens. These are the twelve things a prepared branch can put its hand on.</p>
+    <ul class="pointlist cols">
+      <li>Emergency contacts are current and posted</li>
+      <li>Exits and the assembly point are known and clear</li>
+      <li>Fire equipment and alarms are maintained</li>
+      <li>First-aid kit and trained first aiders are current</li>
+      <li>Cold-chain monitoring works</li>
+      <li>Backup power and contingency are understood</li>
+      <li>Chemicals are labelled, segregated and SDS are accessible</li>
+      <li>Gas safety is understood where applicable</li>
+      <li>HOLD / DO NOT SELL process is understood</li>
+      <li>POS / communication downtime process works</li>
+      <li>Training and drills are practiced</li>
+      <li>Incidents and tests are reviewed and actions closed</li>
+    </ul>
+    <p class="ref">Target state: no tribal knowledge. The branch can show the control, the contact, the plan and the record.</p>
+  </section>
+
+  <!-- 18 · band -->
+  <section class="slide band">
+    <div class="inner">
+      <div class="eyebrow">Part three</div>
+      <h1>What would you do?</h1>
+      <p class="lede">Two situations from the shop floor, then five questions. Answer out loud before you advance.</p>
+    </div>
+  </section>
+
+  <!-- 19 · scenario 1 -->
+  <section class="slide tall" data-steps="1">
+    <div class="eyebrow">15 · Exercise</div>
+    <h2>Scenario 01: 6:45 PM power outage.</h2>
+    <p class="label">The situation</p>
+    <p class="story">You are the Branch / Outlet Lead. The branch is busy. The cold room is full. Pharmacy is still serving patients. POS is down.</p>
+    <p class="story">Power has failed. Customers are still inside. Lighting is poor. Refrigeration is silent. A refrigerator alarm in pharmacy has not yet been checked.</p>
+    <p class="label flag">Time pressure</p>
+    <h3>What do you do in the first 10 minutes?</h3>
+    <ol class="numlist">
+      <li>Who is Incident Lead?</li>
+      <li>What happens to customer movement / lighting?</li>
+      <li>What happens to cold room / freezer / pharmacy refrigerator doors?</li>
+      <li>What gets put on HOLD?</li>
+      <li>What is the approved response for POS downtime?</li>
+      <li>When do you escalate to Operations / technical support?</li>
+    </ol>
+    <div class="prompt" data-prompt><kbd>→</kbd> reveal the answers</div>
+    <div class="reveal" data-step="1">
+      <ol class="numlist">
+        <li>The <b>Branch / Outlet Lead</b>, until relieved.</li>
+        <li>Control customer movement, keep safe lighting, stop unsafe areas, account for everyone inside.</li>
+        <li>Keep them <b>closed</b>. Record the outage start time and monitor temperatures.</li>
+        <li>Any temperature-exposed cold-chain or pharmacy stock: HOLD / DO NOT SELL, segregated and traced.</li>
+        <li>The approved POS / dispensing downtime process, protecting records and reconciling on restoration.</li>
+        <li>Immediately if safety, cold chain, medicine availability or trading continuity is threatened, plus the relevant function.</li>
+      </ol>
+      <p class="note bad">The two most common failures here: opening the cold-room doors “to check”, and letting the queue keep the pharmacy counter running without confirming the refrigerator.</p>
+    </div>
+  </section>
+
+  <!-- 20 · scenario 2 -->
+  <section class="slide tall" data-steps="1">
+    <div class="eyebrow">16 · Exercise</div>
+    <h2>Scenario 02: Smoke in the deli.</h2>
+    <p class="label">The situation</p>
+    <p class="story">A staff member smells burning near the deli. There is visible smoke. Customers are present near the food display.</p>
+    <p class="story">Smoke is visible. There is ready-to-eat food in the service area, cooking equipment in the deli, and customers nearby.</p>
+    <p class="label flag">Role play</p>
+    <h3>What should the first observer do, and what should the Branch Lead do next?</h3>
+    <div class="prompt" data-prompt><kbd>→</kbd> reveal the answers</div>
+    <div class="reveal" data-step="1">
+      <ol class="numlist">
+        <li>Raise the alarm and move away from the source.</li>
+        <li>Call the emergency / fire response number.</li>
+        <li>Evacuate customers and staff through safe exits.</li>
+        <li>Headcount and report missing persons.</li>
+        <li>Keep the smoke-affected area closed.</li>
+        <li>Quarantine exposed ready-to-eat food and food-contact surfaces pending assessment.</li>
+      </ol>
+      <p class="note good">Only a trained person uses an extinguisher, and only if the fire is small and escape remains possible. Everything else waits.</p>
+    </div>
+  </section>
+
+  <!-- 21 · knowledge check -->
+  <section class="slide tall" data-steps="1">
+    <div class="eyebrow">17 · Knowledge check</div>
+    <h2>Five questions before you leave.</h2>
+    <p class="why">Use a quick round-the-room response. No slides for the answers.</p>
+    <ol class="quiz">
+      <li>Who is the Incident Lead at a branch?<span class="ans reveal" data-step="1">The Branch / Outlet Lead, until relieved.</span></li>
+      <li>What is the first priority in any emergency?<span class="ans reveal" data-step="1">Protect people. Life safety comes first; product protection comes after.</span></li>
+      <li>When do you use HOLD / DO NOT SELL?<span class="ans reveal" data-step="1">Whenever product safety is questionable: heat, smoke, water, chemical, temperature abuse, damage or security loss. It stays controlled until assessed.</span></li>
+      <li>When can an affected area re-open?<span class="ans reveal" data-step="1">Only when people are safe, the hazard is controlled, the product has been assessed, and the required technical / quality / pharmacy approval is given.</span></li>
+      <li>What is one emergency control you should be able to demonstrate today?<span class="ans reveal" data-step="1">Any one of: the assembly point, the emergency contacts, closing the cold-room doors, the HOLD process, or the POS downtime process.</span></li>
+    </ol>
+    <div class="prompt" data-prompt><kbd>→</kbd> reveal the answers</div>
+    <p class="ref">Aim: every participant can execute the FIRST 10 MINUTES from memory.</p>
+  </section>
+
+  <!-- 22 · close -->
+  <section class="slide band">
+    <div class="inner">
+      <img class="logo" alt="XanaLife, Every Day Better" src="https://www.xanalife.com/cdn/shop/files/logo_svg.svg?v=1764271953&width=832">
+      <div class="eyebrow">Ready when it matters</div>
+      <h1>Protect people. Control the hazard. Protect product. Recover well.</h1>
+      <p class="lede">Preparedness is not a document on a shelf. It is a behavior the branch can execute under pressure.</p>
+
+      <div class="paths">
+        <div class="path">
+          <div class="path-label">If you are running the session</div>
+          <p>Work through the deck in order. Stop at the two situations and let the room answer out loud before you advance. The reveal is for confirming, not for teaching.</p>
+        </div>
+        <div class="path">
+          <div class="path-label">If you are reading this on your own</div>
+          <p>Memorise the first ten minutes. Then ask your Branch Lead for the three things this deck cannot give you: the site emergency contacts, the fire plan, and the SDS folder.</p>
+          <p><b>If a site requirement is stricter than anything here, the stricter requirement applies.</b></p>
+        </div>
+      </div>
+
+      <p class="lede">Questions / discussion.</p>
+      <p class="ref" style="color:rgba(244,248,245,.55)">Xana Operating System · Emergency Preparedness &amp; Response · September 2026 · internal use</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="chrome">
+  <span class="who">XanaLife · emergency preparedness &amp; response · branch staff</span>
+  <div class="nav">
+    <button type="button" id="prev" aria-label="Previous slide">&larr; Back</button>
+    <span class="counter" id="counter">1 / 22</span>
+    <button type="button" id="next" aria-label="Next slide">Next &rarr;</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides  = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var stage   = document.getElementById("stage");
+  var counter = document.getElementById("counter");
+  var bar     = document.getElementById("progress");
+  var prevBtn = document.getElementById("prev");
+  var nextBtn = document.getElementById("next");
+
+  /* Cascade order for the item-in animation. The delay lives in CSS as
+     `calc(var(--n) * 36ms)`; numbering each child once here keeps that rule to a
+     single declaration instead of a dozen :nth-child rules. */
+  document.querySelectorAll(".pointlist, .numlist, .quiz, .grid2").forEach(function (list) {
+    Array.prototype.forEach.call(list.children, function (child, idx) {
+      child.style.setProperty("--n", idx);
+    });
+  });
+
+  var lastIndex = 0;
+
+  var i = 0;
+  var step = 0;
+
+  function stepsOn(slide) {
+    return parseInt(slide.getAttribute("data-steps") || "0", 10);
+  }
+
+  function render() {
+    /* Direction of travel decides which side the next slide enters from. Set
+       before the is-current flip so style recalc sees the final value; a step-only
+       change leaves it untouched, and the entrance does not replay because the
+       slide never left display:flex. */
+    var moved = i !== lastIndex;
+    if (i > lastIndex) stage.dataset.dir = "fwd";
+    else if (i < lastIndex) stage.dataset.dir = "back";
+    lastIndex = i;
+
+    slides.forEach(function (s, n) {
+      s.classList.toggle("is-current", n === i);
+    });
+
+    var cur = slides[i];
+    cur.querySelectorAll(".reveal").forEach(function (el) {
+      var need = parseInt(el.getAttribute("data-step") || "1", 10);
+      el.classList.toggle("shown", step >= need);
+    });
+    var p = cur.querySelector("[data-prompt]");
+    if (p) p.classList.toggle("hidden", step >= stepsOn(cur));
+
+    counter.textContent = (i + 1) + " / " + slides.length;
+    bar.style.width = ((i + 1) / slides.length * 100) + "%";
+    prevBtn.disabled = (i === 0 && step === 0);
+    nextBtn.disabled = (i === slides.length - 1 && step >= stepsOn(slides[i]));
+    /* Only a real slide change resets the scroll. A reveal adds height below where
+       the reader already is; snapping them to the top hid the answers they just
+       asked for. */
+    if (moved) window.scrollTo(0, 0);
+  }
+
+  function forward() {
+    if (step < stepsOn(slides[i])) { step++; }
+    else if (i < slides.length - 1) { i++; step = 0; }
+    else { return; }
+    render();
+  }
+
+  function back() {
+    if (step > 0) { step--; }
+    else if (i > 0) { i--; step = stepsOn(slides[i]); }
+    else { return; }
+    render();
+  }
+
+  nextBtn.addEventListener("click", forward);
+  prevBtn.addEventListener("click", back);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); forward(); }
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); back(); }
+    else if (e.key === "Home") { i = 0; step = 0; render(); }
+    else if (e.key === "End") { i = slides.length - 1; step = stepsOn(slides[i]); render(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
